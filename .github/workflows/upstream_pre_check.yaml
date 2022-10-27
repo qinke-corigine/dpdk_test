@@ -1,0 +1,29 @@
+name: upstream pre check
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+jobs:
+  patch_chk_job:
+    runs-on:
+      - self-hosted
+    name: Patches Check
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v3
+
+    - name: Checkout dts repo
+      uses: actions/checkout@v3
+      with:
+        repository: Corigine/dpdk-dts-private
+        token: ${{ secrets.GHUB_TOKEN }}
+        ref: upsrtream_pre_check_dts
+        path: dpdk-dts-private
+      if: always()
+
+    - name: Excute dts test
+      run: |
+        pwd
+        cd ../
+        ls -ll
